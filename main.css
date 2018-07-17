@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+}
+
+header {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+main {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+section h3 {
+  margin-bottom: 10px;
+}
+
+form button {
+  margin-top: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
