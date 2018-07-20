@@ -23,6 +23,7 @@ function getDataFromBestBuy(x,y) {
 
 function renderInitialResult(result) {
   console.log(result);
+  console.log("renderResultRan");
 }
 
 function getDataFromWalmart(term,callback) {
