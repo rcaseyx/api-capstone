@@ -1,13 +1,14 @@
 const amazon = "";
-const walmart = "";
+const walmart = "http://api.walmartlabs.com/v1/search";
 const youtube = "https://www.googleapis.com/youtube/v3/search";
+const walmartKey = "5m7jtwd577wt8sfauytwcxeu";
 
 function getDataFromYt(term,callback) {
   // retrieves JSON data from YouTube
   const query = {
     part: "snippet",
     type: "video",
-    q: `${term}`,
+    q: `${term} review`,
     maxResults: "5",
     key: "AIzaSyDxLrPbRwFR8exidCjH1KBLdMNRZXA9QnQ"
   }
@@ -15,17 +16,29 @@ function getDataFromYt(term,callback) {
   $.getJSON(youtube,query,callback);
 }
 
-function getDataFromAmz(x,y) {
+function getDataFromBestBuy(x,y) {
   // retrieves data from Amazon Products API
 
 }
 
-function getDataFromWalmart(x,y) {
+function renderInitialResult(result) {
+  console.log(result);
+}
+
+function getDataFromWalmart(term,callback) {
   // retrieves data from Walmart API
+  const query = {
+    apiKey: `${walmartKey}`,
+    query: `${term}`,
+    start: "1",
+    numItems: "25",
+  }
+
+  $.getJSON(walmart,query,callback);
 
 }
 
-function displayAmzData(data) {
+function displayBestBuyData(data) {
   // displays data from AMZ in the DOM
 
 }
@@ -36,7 +49,7 @@ function displayYtData(data) {
 }
 
 function displayWalmartData(data) {
-
+  const result = data.items.map((item,index) => renderInitialResult(item));
 }
 
 function handleSearch() {
@@ -45,7 +58,7 @@ function handleSearch() {
     let searchTerm = $('#query').val();
     $('#query').val('');
     $('.js-results').html('');
-    getDataFromAmz(searchTerm,displayAmzData);
+    getDataFromWalmart(searchTerm,displayWalmartData);
   });
 }
 
