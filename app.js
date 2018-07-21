@@ -1,7 +1,5 @@
-const amazon = "";
-const walmart = "http://api.walmartlabs.com/v1/search";
+const omdb = "http://www.omdbapi.com/?";
 const youtube = "https://www.googleapis.com/youtube/v3/search";
-const walmartKey = "5m7jtwd577wt8sfauytwcxeu";
 
 function getDataFromYt(term,callback) {
   // retrieves JSON data from YouTube
@@ -26,17 +24,15 @@ function renderInitialResult(result) {
   console.log("renderResultRan");
 }
 
-function getDataFromWalmart(term,callback) {
+function getDataFromWalmart(term,type,callback) {
   // retrieves data from Walmart API
   const query = {
-    apiKey: `${walmartKey}`,
-    query: `${term}`,
-    start: "1",
-    numItems: "25",
+    apikey: `fe50249c`,
+    s: `${term}`,
+    type: `${type}`,
   }
 
-  $.getJSON(walmart,query,callback);
-
+  $.getJSON(omdb,query,callback);
 }
 
 function displayBestBuyData(data) {
@@ -57,9 +53,11 @@ function handleSearch() {
   $('.js-search').submit(function(e) {
     e.preventDefault();
     let searchTerm = $('#query').val();
+    let type = $('input[type=radio]:checked').attr('value');
     $('#query').val('');
     $('.js-results').html('');
-    getDataFromWalmart(searchTerm,displayWalmartData);
+    console.log(type);
+    getDataFromWalmart(searchTerm,type,displayWalmartData);
   });
 }
 
