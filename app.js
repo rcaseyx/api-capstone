@@ -1,4 +1,4 @@
-const omdb = "http://www.omdbapi.com/?";
+const omdb = "https://www.omdbapi.com/?";
 const youtube = "https://www.googleapis.com/youtube/v3/search";
 
 function getDataFromYt(term,type,callback) {
