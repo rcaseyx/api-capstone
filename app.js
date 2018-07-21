@@ -1,14 +1,12 @@
-const amazon = "";
-const walmart = "http://api.walmartlabs.com/v1/search";
+const omdb = "http://www.omdbapi.com/?";
 const youtube = "https://www.googleapis.com/youtube/v3/search";
-const walmartKey = "5m7jtwd577wt8sfauytwcxeu";
 
-function getDataFromYt(term,callback) {
+function getDataFromYt(term,type,callback) {
   // retrieves JSON data from YouTube
   const query = {
     part: "snippet",
     type: "video",
-    q: `${term} review`,
+    q: `${term} ${type}`,
     maxResults: "5",
     key: "AIzaSyDxLrPbRwFR8exidCjH1KBLdMNRZXA9QnQ"
   }
@@ -22,44 +20,44 @@ function getDataFromBestBuy(x,y) {
 }
 
 function renderInitialResult(result) {
-  console.log(result);
-  console.log("renderResultRan");
+  return `<div>
+            <img src="${result.Poster}" alt="${result.Title} poster">
+            <p>${result.Title}</p>
+            <button>Get the Scoop!</button>
+          </div>`
 }
 
-function getDataFromWalmart(term,callback) {
-  // retrieves data from Walmart API
+function getDataFromOmdb(term,type,callback) {
   const query = {
-    apiKey: `${walmartKey}`,
-    query: `${term}`,
-    start: "1",
-    numItems: "25",
+    apikey: `fe50249c`,
+    s: `${term}`,
+    type: `${type}`,
   }
 
-  $.getJSON(walmart,query,callback);
-
+  $.getJSON(omdb,query,callback);
 }
 
 function displayBestBuyData(data) {
-  // displays data from AMZ in the DOM
 
 }
 
 function displayYtData(data) {
-  // displays data from YouTube in the DOM
 
 }
 
-function displayWalmartData(data) {
-  const result = data.items.map((item,index) => renderInitialResult(item));
+function displayOmdbData(data) {
+  const result = data.Search.map((item,index) => renderInitialResult(item));
+  $('.js-results').html(result);
 }
 
 function handleSearch() {
   $('.js-search').submit(function(e) {
     e.preventDefault();
     let searchTerm = $('#query').val();
+    let type = $('input[type=radio]:checked').attr('value');
     $('#query').val('');
     $('.js-results').html('');
-    getDataFromWalmart(searchTerm,displayWalmartData);
+    getDataFromOmdb(searchTerm,type,displayOmdbData);
   });
 }
 
@@ -67,14 +65,9 @@ function handleYtClick() {
 
 }
 
-function handlePriceCheckClick() {
-
-}
-
 function handleScoop() {
   handleSearch();
   handleYtClick();
-  handlePriceCheckClick();
 }
 
 $(handleScoop);
