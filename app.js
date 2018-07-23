@@ -6,6 +6,7 @@ function handleSearch() {
     $('.purchase').html('');
     $('.scoop').html('');
     $('.trailer').html('');
+    $('.back-button').html('');
     let searchTerm = $('#query').val();
     let type = $('input[type=radio]:checked').attr('value');
     $('#query').val('');
@@ -42,6 +43,8 @@ function renderInitialResult(result) {
 function handleGetTheScoop() {
   $('.js-results').on('click','#get-scoop',function() {
     $('.js-results').prop('hidden',true);
+    $('.back-button').prop('hidden',false);
+    $('.back-button').html('<button class="back">Back to Results</button>');
     let type = $('input[type=radio]:checked').attr('value');
     let id = $(this).closest('div').attr('id');
     let title = $(this).closest('div').find('img').attr('alt');
@@ -88,7 +91,6 @@ function renderTrailer(result) {
 
 function renderSelectionDetails(result) {
   let html = `<div>
-                <button class="back">Back to Results</button>
                 <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTv(result)}" name="${result.release_date}">
                 <p>${movieOrTv(result)}</p>
                 <p><em>${result.overview}</em></p>
@@ -149,7 +151,8 @@ function closeVideo() {
 }
 
 function getDataFromBestBuy(title,year,callback) {
-  let titleReplace = title.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '');
+  let titleFirstReplace = title.replace(/[#,+()$~%.'":*?<>{}]/g, '');
+  let titleReplace = titleFirstReplace.replace(/&/g, 'and');
   let titleArr = titleReplace.split(' ');
   let search = "";
   for(i = 0; i < titleArr.length; i++) {
@@ -168,7 +171,7 @@ function getDataFromBestBuy(title,year,callback) {
      }
   }
   let bestbuy = `https://api.bestbuy.com/v1/products${search}?apiKey=vA4dhUHYoqxQPPdAthqHLESp&format=json`;
-  $.getJSON(bestbuy,callback);
+  $.getJSON(bestbuy,callback).fail(showBestBuyError);
 }
 
 function displayBestBuyData(data) {
@@ -177,20 +180,33 @@ function displayBestBuyData(data) {
 }
 
 function renderBestBuy(item) {
-  console.log(item);
+  if(!item) {
+    showBestBuyError();
+  }
+  else {
+    let html = `<div>
+                  <img src=${item.image} alt="Buy on Blu Ray">
+                  <p>${item.name}</p>
+                  <a href="${item.url}" target="_blank"><p>Purchase at BestBuy.com</p></a>
+                </div>`;
+    $('.purchase').html(html);
+  }
+}
+
+function showBestBuyError() {
   let html = `<div>
-                <img src=${item.image} alt="Buy on Blu Ray">
-                <p>${item.name}</p>
-                <a href="${item.url}" target="_blank"><p>Purchase at BestBuy.com</p></a>
+                <p>Item not found at Best Buy.</p>
               </div>`;
   $('.purchase').html(html);
 }
 
 function handleBack() {
-  $('.scoop').on('click','.back',function() {
+  $('.back-button').on('click','.back',function() {
+    $('.back-button').html('');
     $('.purchase').html('');
     $('.scoop').html('');
     $('.trailer').html('');
+    $('.back-button').prop('hidden',true);
     $('.js-results').prop('hidden',false);
   })
 }
