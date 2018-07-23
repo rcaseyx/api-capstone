@@ -168,7 +168,6 @@ function getDataFromBestBuy(title,year,callback) {
      }
   }
   let bestbuy = `https://api.bestbuy.com/v1/products${search}?apiKey=vA4dhUHYoqxQPPdAthqHLESp&format=json`;
-  console.log(bestbuy);
   $.getJSON(bestbuy,callback);
 }
 
