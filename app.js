@@ -90,11 +90,14 @@ function renderTrailer(result) {
 }
 
 function renderSelectionDetails(result) {
+  console.log(result);
   let html = `<div>
                 <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTv(result)}" name="${result.release_date}">
                 <p>${movieOrTv(result)}</p>
                 <p><em>${result.overview}</em></p>
-                <p>${cycleGenreNames(result.genres)}</p>
+                <p>Genre: <span class="genres">${cycleGenreNames(result.genres)}</span></p>
+                <p>Runtime: <span class="runtime">${result.runtime} minutes</span></p>
+                <p>IMDb Rating: <span class="rating">${result.vote_average} / 10</span></p>
                 <button class="viewTrailer">View Trailer</button>
               </div>`;
 
