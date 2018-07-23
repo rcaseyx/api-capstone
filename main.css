@@ -55,3 +55,8 @@ iframe {
   display: none;
   text-align: center;
 }
+
+.back-button {
+  margin-bottom: 10px;
+  float: left;
+}
