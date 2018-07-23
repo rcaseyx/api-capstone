@@ -3,6 +3,7 @@ const youtube = "https://www.googleapis.com/youtube/v3/search";
 function handleSearch() {
   $('.js-search').submit(function(e) {
     e.preventDefault();
+    $('.purchase').html('');
     $('.scoop').html('');
     $('.trailer').html('');
     let searchTerm = $('#query').val();
@@ -32,7 +33,7 @@ function displayTmdbData(data) {
 function renderInitialResult(result) {
   //console.log(result);
   return `<div id=${result.id}>
-            <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTv(result)}">
+            <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTv(result)}" name="${result.release_date}">
             <p>${movieOrTv(result)}</p>
             <button id="get-scoop">Get the Scoop!</button>
           </div>`
@@ -43,16 +44,19 @@ function handleGetTheScoop() {
     $('.js-results').prop('hidden',true);
     let type = $('input[type=radio]:checked').attr('value');
     let id = $(this).closest('div').attr('id');
+    let title = $(this).closest('div').find('img').attr('alt');
+    let year = $(this).closest('div').find('img').attr('name').slice(0,4);
+    getDataFromBestBuy(title,year,displayBestBuyData);
     getSingleData(id,type,renderSelectionDetails);
   });
 }
 
-function getDataFromYt(term,type,callback) {
+function getDataFromYt(term,type,year,callback) {
   // retrieves JSON data from YouTube
   const query = {
     part: "snippet",
     type: "video",
-    q: `${term} ${type} trailer`,
+    q: `${term} ${year} ${type} trailer`,
     maxResults: "1",
     key: "AIzaSyDxLrPbRwFR8exidCjH1KBLdMNRZXA9QnQ"
   }
@@ -84,7 +88,8 @@ function renderTrailer(result) {
 
 function renderSelectionDetails(result) {
   let html = `<div>
-                <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTv(result)} poster">
+                <button class="back">Back to Results</button>
+                <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTv(result)}" name="${result.release_date}">
                 <p>${movieOrTv(result)}</p>
                 <p><em>${result.overview}</em></p>
                 <p>${cycleGenreNames(result.genres)}</p>
@@ -112,8 +117,9 @@ function cycleGenreNames(genres) {
 function handleYtClick() {
   $('.scoop').on('click','.viewTrailer',function() {
     let title = $(this).closest('div').find('img').attr('alt');
+    let year = $(this).closest('div').find('img').attr('name').slice(0,4);
     let type = $('input[type=radio]:checked').attr('value');
-    getDataFromYt(title,type,displayYtData);
+    getDataFromYt(title,type,year,displayYtData);
     openVideo();
   });
 }
@@ -142,13 +148,52 @@ function closeVideo() {
   $('.trailer').html('');
 }
 
-function getDataFromBestBuy(x,y) {
-  // retrieves data from Amazon Products API
-
+function getDataFromBestBuy(title,year,callback) {
+  let titleReplace = title.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, '');
+  let titleArr = titleReplace.split(' ');
+  let search = "";
+  for(i = 0; i < titleArr.length; i++) {
+    let word = titleArr[i];
+     if(titleArr.length == 1) {
+       search += `((search=${word}&search=${year}&search=blu&search=ray))`;
+     }
+     else if(i == 0) {
+       search += `((search=${word}`;
+     }
+     else if(i == titleArr.length - 1) {
+       search += `&search=${word}&search=${year}&search=blu&search=ray))`;
+     }
+     else {
+       search += `&search=${word}`
+     }
+  }
+  let bestbuy = `https://api.bestbuy.com/v1/products${search}?apiKey=vA4dhUHYoqxQPPdAthqHLESp&format=json`;
+  console.log(bestbuy);
+  $.getJSON(bestbuy,callback);
 }
 
 function displayBestBuyData(data) {
+  const result = renderBestBuy(data.products[0]);
+  $('.purchase').html(result);
+}
 
+function renderBestBuy(item) {
+  console.log(item);
+  let html = `<div>
+                <img src=${item.image} alt="Buy on Blu Ray">
+                <p>${item.name}</p>
+                <a href="${item.url}" target="_blank"><p>Purchase at BestBuy.com</p></a>
+              </div>`;
+  $('.purchase').html(html);
+}
+
+function handleBack() {
+  $('.scoop').on('click','.back',function() {
+    $('.purchase').html('');
+    $('.scoop').html('');
+    $('.trailer').html('');
+    $('.js-results').prop('hidden',false);
+  })
 }
 
 function handleScoop() {
@@ -157,6 +202,7 @@ function handleScoop() {
   handleGetTheScoop();
   handleYtClick();
   handleCloseVid();
+  handleBack();
 }
 
 $(handleScoop);
