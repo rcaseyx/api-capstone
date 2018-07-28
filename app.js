@@ -1,4 +1,5 @@
 const youtube = "https://www.googleapis.com/youtube/v3/search";
+let type = "";
 
 function handleSearch() {
   $('.js-search').submit(function(e) {
@@ -8,7 +9,7 @@ function handleSearch() {
     $('.trailer').html('');
     $('.back-button').html('');
     let searchTerm = $('#query').val();
-    let type = $('input[type=radio]:checked').attr('value');
+    type = $('input[type=radio]:checked').attr('value');
     $('#query').val('');
     $('.js-results').html('');
     $('.js-results').prop('hidden',false);
@@ -34,8 +35,8 @@ function displayTmdbData(data) {
 function renderInitialResult(result) {
   //console.log(result);
   return `<div id=${result.id}>
-            <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTv(result)}" name="${result.release_date}">
-            <p>${movieOrTv(result)}</p>
+            <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTvTitle(result)}" name="${result.release_date}">
+            <p>${movieOrTvTitle(result)}</p>
             <button id="get-scoop">Get the Scoop!</button>
           </div>`
 }
@@ -45,12 +46,14 @@ function handleGetTheScoop() {
     $('.js-results').prop('hidden',true);
     $('.back-button').prop('hidden',false);
     $('.back-button').html('<button class="back">Back to Results</button>');
-    let type = $('input[type=radio]:checked').attr('value');
+    //let type = $('input[type=radio]:checked').attr('value');
     let id = $(this).closest('div').attr('id');
     let title = $(this).closest('div').find('img').attr('alt');
     let year = $(this).closest('div').find('img').attr('name').slice(0,4);
     getDataFromBestBuy(title,year,displayBestBuyData);
+    getRecsFromTmdb(id,type,displayRecs);
     getSingleData(id,type,renderSelectionDetails);
+    $('html, body').animate({scrollTop : 0},800);
   });
 }
 
@@ -92,11 +95,11 @@ function renderTrailer(result) {
 function renderSelectionDetails(result) {
   console.log(result);
   let html = `<div>
-                <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTv(result)}" name="${result.release_date}">
-                <p>${movieOrTv(result)}</p>
+                <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTvTitle(result)}" name="${result.release_date}">
+                <p>${movieOrTvTitle(result)}</p>
                 <p><em>${result.overview}</em></p>
                 <p>Genre: <span class="genres">${cycleGenreNames(result.genres)}</span></p>
-                <p>Runtime: <span class="runtime">${result.runtime} minutes</span></p>
+                <p>Runtime: <span class="runtime">${movieOrTvRuntime(result)} minutes</span></p>
                 <p>IMDb Rating: <span class="rating">${result.vote_average} / 10</span></p>
                 <button class="viewTrailer">View Trailer</button>
               </div>`;
@@ -104,12 +107,21 @@ function renderSelectionDetails(result) {
   $('.scoop').html(html);
 }
 
-function movieOrTv(result) {
-  if(!result.title) {
+function movieOrTvTitle(result) {
+  if(type == "tv") {
     return `${result.name}`;
   }
   else {
     return `${result.title}`;
+  }
+}
+
+function movieOrTvRuntime(result) {
+  if(type == "tv") {
+    return `${result.episode_run_time[0]}`;
+  }
+  else {
+    return `${result.runtime}`;
   }
 }
 
@@ -158,20 +170,39 @@ function getDataFromBestBuy(title,year,callback) {
   let titleReplace = titleFirstReplace.replace(/&/g, 'and');
   let titleArr = titleReplace.split(' ');
   let search = "";
-  for(i = 0; i < titleArr.length; i++) {
-    let word = titleArr[i];
-     if(titleArr.length == 1) {
-       search += `((search=${word}&search=${year}&search=blu&search=ray))`;
-     }
-     else if(i == 0) {
-       search += `((search=${word}`;
-     }
-     else if(i == titleArr.length - 1) {
-       search += `&search=${word}&search=${year}&search=blu&search=ray))`;
-     }
-     else {
-       search += `&search=${word}`
-     }
+  if(type == "movie") {
+    for(i = 0; i < titleArr.length; i++) {
+      let word = titleArr[i];
+       if(titleArr.length == 1) {
+         search += `((search=${word}&search=${year}&search=blu&search=ray))`;
+       }
+       else if(i == 0) {
+         search += `((search=${word}`;
+       }
+       else if(i == titleArr.length - 1) {
+         search += `&search=${word}&search=${year}&search=blu&search=ray))`;
+       }
+       else {
+         search += `&search=${word}`
+       }
+    }
+  }
+  else {
+    for(i = 0; i < titleArr.length; i++) {
+      let word = titleArr[i];
+       if(titleArr.length == 1) {
+         search += `((search=${word}&search=blu&search=ray))`;
+       }
+       else if(i == 0) {
+         search += `((search=${word}`;
+       }
+       else if(i == titleArr.length - 1) {
+         search += `&search=${word}&search=blu&search=ray))`;
+       }
+       else {
+         search += `&search=${word}`
+       }
+    }
   }
   let bestbuy = `https://api.bestbuy.com/v1/products${search}?apiKey=vA4dhUHYoqxQPPdAthqHLESp&format=json`;
   $.getJSON(bestbuy,callback).fail(showBestBuyError);
@@ -203,12 +234,51 @@ function showBestBuyError() {
   $('.purchase').html(html);
 }
 
+function getRecsFromTmdb(id,type,callback) {
+  const tmdb = `https://api.themoviedb.org/3/${type}/${id}/recommendations`;
+  const query = {
+    api_key: `0ac47474c87a54ead692cf6cce79a4ed`,
+  }
+
+  $.getJSON(tmdb,query,callback);
+}
+
+function displayRecs(data) {
+  const result = data.results.map((item,index) => renderRecs(item));
+  $('.recommend').html(result);
+}
+
+function renderRecs(result) {
+  return `<div id=${result.id}>
+            <p>${movieOrTvTitle(result)}</p>
+            <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTvTitle(result)}" name="${result.release_date}" class="smallPoster">
+            <button class="viewRec">View</button>
+          </div>`
+}
+
+function handleViewRec() {
+  $('.recommend').on('click','.viewRec',function() {
+    $('.js-results').prop('hidden',true);
+    $('.back-button').prop('hidden',false);
+    $('.back-button').html('<button class="back">Back to Results</button>');
+    //let type = $('input[type=radio]:checked').attr('value');
+    let id = $(this).closest('div').attr('id');
+    let title = $(this).closest('div').find('img').attr('alt');
+    let year = $(this).closest('div').find('img').attr('name').slice(0,4);
+    getDataFromBestBuy(title,year,displayBestBuyData);
+    getRecsFromTmdb(id,type,displayRecs);
+    getSingleData(id,type,renderSelectionDetails);
+    $('html, body').animate({scrollTop : 0},800);
+  });
+}
+
 function handleBack() {
   $('.back-button').on('click','.back',function() {
     $('.back-button').html('');
     $('.purchase').html('');
     $('.scoop').html('');
     $('.trailer').html('');
+    $('.recommend').html('');
     $('.back-button').prop('hidden',true);
     $('.js-results').prop('hidden',false);
   })
@@ -220,6 +290,7 @@ function handleScoop() {
   handleGetTheScoop();
   handleYtClick();
   handleCloseVid();
+  handleViewRec();
   handleBack();
 }
 
