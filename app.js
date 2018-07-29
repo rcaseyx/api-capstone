@@ -8,11 +8,14 @@ function handleSearch() {
     $('.scoop').html('');
     $('.trailer').html('');
     $('.back-button').html('');
+    $('.recommend').html('');
+    $('.page').prop('hidden',true);
     let searchTerm = $('#query').val();
     type = $('input[type=radio]:checked').attr('value');
     $('#query').val('');
     $('.js-results').html('');
     $('.js-results').prop('hidden',false);
+    $('.js-results').css('display','flex');
     getListFromTmdb(searchTerm,type,displayTmdbData);
   });
 }
@@ -28,14 +31,25 @@ function getListFromTmdb(term,type,callback) {
 }
 
 function displayTmdbData(data) {
-  const result = data.results.map((item,index) => renderInitialResult(item));
-  $('.js-results').html(result);
+  if(data.results.length === 0) {
+    const result = `<p>No results. Please try another search.</p>`
+    $('.js-results').html(result);
+  }
+  else if(data.results.length > 0 && data.results.length < 8) {
+    const result = data.results.map((item,index) => renderInitialResult(item));
+    $('.js-results').html(result);
+  }
+  else {
+    let sliceData = data.results.slice(0,8);
+    const result = sliceData.map((item,index) => renderInitialResult(item));
+    $('.js-results').html(result);
+  }
 }
 
 function renderInitialResult(result) {
   //console.log(result);
-  return `<div id=${result.id}>
-            <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTvTitle(result)}" name="${result.release_date}">
+  return `<div id=${result.id} class="searchResult">
+            <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)}" name="${result.release_date}">
             <p>${movieOrTvTitle(result)}</p>
             <button id="get-scoop">Get the Scoop!</button>
           </div>`
@@ -44,7 +58,9 @@ function renderInitialResult(result) {
 function handleGetTheScoop() {
   $('.js-results').on('click','#get-scoop',function() {
     $('.js-results').prop('hidden',true);
+    $('.js-results').hide();
     $('.back-button').prop('hidden',false);
+    $('.page').prop('hidden',false);
     $('.back-button').html('<button class="back">Back to Results</button>');
     //let type = $('input[type=radio]:checked').attr('value');
     let id = $(this).closest('div').attr('id');
@@ -88,23 +104,33 @@ function renderTrailer(result) {
   return `<div class="videoBox" aria-live="assertive">
             <iframe title="Selected Video" src="https://www.youtube.com/embed/${result.id.videoId}">
             </iframe>
+            <span class="ytSearch">Not the right trailer? <a href="https://www.youtube.com/" target="_blank">Search YouTube.</a></span>
             <button class="closeVideo">Close</button>
           </div>`
 }
 
 function renderSelectionDetails(result) {
   console.log(result);
-  let html = `<div>
-                <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTvTitle(result)}" name="${result.release_date}">
-                <p>${movieOrTvTitle(result)}</p>
+  let html = `<div class="currentSelection">
+                <h3>${movieOrTvTitle(result)}</h3>
+                <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)}" name="${result.release_date}">
+                <button class="viewTrailer">View Trailer</button>
                 <p><em>${result.overview}</em></p>
                 <p>Genre: <span class="genres">${cycleGenreNames(result.genres)}</span></p>
                 <p>Runtime: <span class="runtime">${movieOrTvRuntime(result)} minutes</span></p>
                 <p>IMDb Rating: <span class="rating">${result.vote_average} / 10</span></p>
-                <button class="viewTrailer">View Trailer</button>
               </div>`;
 
   $('.scoop').html(html);
+}
+
+function placeholderPoster(result) {
+  if(!result.poster_path) {
+    return 'https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png';
+  }
+  else {
+    return `https://image.tmdb.org/t/p/w500${result.poster_path}`;
+  }
 }
 
 function movieOrTvTitle(result) {
@@ -218,7 +244,8 @@ function renderBestBuy(item) {
     showBestBuyError();
   }
   else {
-    let html = `<div>
+    let html = `<h3>Purchase Online</h3>
+                <div class="bestBuy">
                   <img src=${item.image} alt="Buy on Blu Ray">
                   <p>${item.name}</p>
                   <a href="${item.url}" target="_blank"><p>Purchase at BestBuy.com</p></a>
@@ -228,8 +255,9 @@ function renderBestBuy(item) {
 }
 
 function showBestBuyError() {
-  let html = `<div>
-                <p>Item not found at Best Buy.</p>
+  let html = `<h3>Purchase Online</h3>
+              <div>
+                <p>Item not found at Best Buy. Try searching on <a href="www.amazon.com" target="_blank">Amazon.com</a></p>
               </div>`;
   $('.purchase').html(html);
 }
@@ -244,16 +272,32 @@ function getRecsFromTmdb(id,type,callback) {
 }
 
 function displayRecs(data) {
-  const result = data.results.map((item,index) => renderRecs(item));
-  $('.recommend').html(result);
+  if(data.results.length === 0) {
+    recError();
+  }
+  else{
+    //const result = data.results.map((item,index) => renderRecs(item));
+    let result = "";
+    for(i = 0;i < data.results.length;i++){
+      result += renderRecs(data.results[i]);
+    }
+    $('.recommend').html(`<h3>Recommendations Based On This Title</h3>`);
+    $('.recommend').append('<div class="recScroll">' + result + '</div>');
+  }
 }
 
 function renderRecs(result) {
-  return `<div id=${result.id}>
+  return `<div id=${result.id} class="recs">
             <p>${movieOrTvTitle(result)}</p>
             <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTvTitle(result)}" name="${result.release_date}" class="smallPoster">
             <button class="viewRec">View</button>
           </div>`
+}
+
+function recError() {
+  let html = `<h3>Recommendations Based On This Title</h3>
+              <p>No recommendations found at this time.</p>`
+  $('.recommend').html(html);
 }
 
 function handleViewRec() {
@@ -280,7 +324,9 @@ function handleBack() {
     $('.trailer').html('');
     $('.recommend').html('');
     $('.back-button').prop('hidden',true);
+    $('.page').prop('hidden',true);
     $('.js-results').prop('hidden',false);
+    $('.js-results').css('display','flex');
   })
 }
 

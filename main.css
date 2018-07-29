@@ -3,17 +3,121 @@
 }
 
 header {
+  display: flex;
+  justify-content: center;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 10px;
+  width: 30%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10px;
+  text-align: center;
+}
+
+.radios {
+  margin-bottom: 5px;
+}
+
+.search form input {
+  align-content: center;
+}
+
+.search p {
+  font-size: 18px;
+}
+
+.js-results {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.searchResult {
+  display: flex;
+  flex: 1;
+  flex-basis: 25%;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 10px;
   text-align: center;
 }
 
-main {
-  margin-left: auto;
-  margin-right: auto;
+.searchResult img {
+  width: 50%;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.purchase {
+  flex: 1;
+  order: 1;
   text-align: center;
+}
+
+.scoop {
+  flex: 2;
+  order: 2;
+}
+
+.scoop img {
+  width: 80%;
+}
+
+.recommend {
+  flex: 1;
+  order: 3;
+  text-align: center;
+}
+
+.recScroll {
+  overflow: auto;
+  height: 740px;
+}
+
+.recs {
+  border: 1px solid black;
+  margin: auto;
+  padding: 10px;
+  width: 70%;
+}
+
+.recommend h3 {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.currentSelection {
+  text-align: center;
+}
+
+.currentSelection img {
+  margin-bottom: 10px;
+}
+
+.viewTrailer {
+  display: block;
+  margin: auto;
+}
+
+.bestBuy {
+  text-align: center;
+}
+
+.bestBuy img {
+  width: 50%;
 }
 
 section h3 {
@@ -57,12 +161,13 @@ iframe {
 }
 
 .back-button {
-  margin-bottom: 10px;
-  float: left;
+  position: absolute;
+  top: 0;
+  margin-top: 10px;
 }
 
 .smallPoster {
-  width: 10%;
+  width: 80%;
 }
 
 .viewRec {
@@ -71,4 +176,20 @@ iframe {
   margin-left: auto;
   margin-right: auto;
   display: block;
+}
+
+.ytSearch {
+  font-size: 12px;
+  color: white;
+  display: block;
+  margin: auto;
+}
+
+.ytSearch a {
+  color: inherit;
+}
+
+.closeVideo {
+  display: block;
+  margin: auto;
 }
