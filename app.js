@@ -257,7 +257,7 @@ function renderBestBuy(item) {
 function showBestBuyError() {
   let html = `<h3>Purchase Online</h3>
               <div>
-                <p>Item not found at Best Buy. Try searching on <a href="www.amazon.com" target="_blank">Amazon.com</a></p>
+                <p>Item not found at Best Buy. Try searching on <a href="https://www.amazon.com/" target="_blank">Amazon.com</a></p>
               </div>`;
   $('.purchase').html(html);
 }
