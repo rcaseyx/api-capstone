@@ -112,7 +112,9 @@ function renderSelectionDetails(result) {
                 <button class="viewTrailer">View Trailer</button>
                 <p><em>${result.overview}</em></p>
                 <p>Genre: <span class="genres">${cycleGenreNames(result.genres)}</span></p>
-                <p>Runtime: <span class="runtime">${movieOrTvRuntime(result)} minutes</span></p>
+                <p>${formatDate(result)}</p>
+                ${tvEpsSeasons(result)}
+                <p><span class="runtime">${movieOrTvRuntime(result)} minutes</span></p>
                 <p>IMDb Rating: <span class="rating">${result.vote_average} / 10</span></p>
               </div>`;
 
@@ -128,6 +130,16 @@ function placeholderPoster(result) {
   }
 }
 
+function tvEpsSeasons(result) {
+  if(type == "tv") {
+    return `<p>Number of Episodes: ${result.number_of_episodes}</p>
+            <p>Number of Seasons: ${result.number_of_seasons}</p>`;
+  }
+  else {
+    return '';
+  }
+}
+
 function movieOrTvTitle(result) {
   if(type == "tv") {
     return `${result.name}`;
@@ -139,10 +151,23 @@ function movieOrTvTitle(result) {
 
 function movieOrTvRuntime(result) {
   if(type == "tv") {
-    return `${result.episode_run_time[0]}`;
+    return `Episode Runtime: ${result.episode_run_time[0]}`;
   }
   else {
-    return `${result.runtime}`;
+    return `Runtime: ${result.runtime}`;
+  }
+}
+
+function formatDate(result) {
+  if(type == "tv") {
+    let date = result.first_air_date;
+    let dateArr = date.split('-');
+    return `First aired: ${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`;
+  }
+  else {
+    let date = result.release_date;
+    let dateArr = date.split('-');
+    return `Released: ${dateArr[1]}/${dateArr[2]}/${dateArr[0]}`;
   }
 }
 
