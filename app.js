@@ -49,7 +49,7 @@ function displayTmdbData(data) {
 function renderInitialResult(result) {
   //console.log(result);
   return `<div id=${result.id} class="searchResult">
-            <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)}" name="${result.release_date}">
+            <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}">
             <p>${movieOrTvTitle(result)}</p>
             <button id="get-scoop">Get the Scoop!</button>
           </div>`
@@ -64,7 +64,7 @@ function handleGetTheScoop() {
     $('.back-button').html('<button class="back">Back to Results</button>');
     //let type = $('input[type=radio]:checked').attr('value');
     let id = $(this).closest('div').attr('id');
-    let title = $(this).closest('div').find('img').attr('alt');
+    let title = $(this).closest('div').find('p').html();
     let year = $(this).closest('div').find('img').attr('name').slice(0,4);
     getDataFromBestBuy(title,year,displayBestBuyData);
     getRecsFromTmdb(id,type,displayRecs);
@@ -113,7 +113,7 @@ function renderSelectionDetails(result) {
   console.log(result);
   let html = `<div class="currentSelection">
                 <h3>${movieOrTvTitle(result)}</h3>
-                <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)}" name="${result.release_date}">
+                <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}">
                 <button class="viewTrailer">View Trailer</button>
                 <p><em>${result.overview}</em></p>
                 <p>Genre: <span class="genres">${cycleGenreNames(result.genres)}</span></p>
@@ -159,7 +159,8 @@ function cycleGenreNames(genres) {
 
 function handleYtClick() {
   $('.scoop').on('click','.viewTrailer',function() {
-    let title = $(this).closest('div').find('img').attr('alt');
+    let title = $(this).closest('div').find('h3').html();
+    console.log(title);
     let year = $(this).closest('div').find('img').attr('name').slice(0,4);
     let type = $('input[type=radio]:checked').attr('value');
     getDataFromYt(title,type,year,displayYtData);
@@ -194,7 +195,8 @@ function closeVideo() {
 function getDataFromBestBuy(title,year,callback) {
   let titleFirstReplace = title.replace(/[#,+()$~%.'":*?<>{}]/g, '');
   let titleReplace = titleFirstReplace.replace(/&/g, 'and');
-  let titleArr = titleReplace.split(' ');
+  let titleLastReplace = titleReplace.replace(/-/g, ' ');
+  let titleArr = titleLastReplace.split(' ');
   let search = "";
   if(type == "movie") {
     for(i = 0; i < titleArr.length; i++) {
@@ -289,7 +291,7 @@ function displayRecs(data) {
 function renderRecs(result) {
   return `<div id=${result.id} class="recs">
             <p>${movieOrTvTitle(result)}</p>
-            <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTvTitle(result)}" name="${result.release_date}" class="smallPoster">
+            <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}" class="smallPoster">
             <button class="viewRec">View</button>
           </div>`
 }
@@ -305,9 +307,8 @@ function handleViewRec() {
     $('.js-results').prop('hidden',true);
     $('.back-button').prop('hidden',false);
     $('.back-button').html('<button class="back">Back to Results</button>');
-    //let type = $('input[type=radio]:checked').attr('value');
     let id = $(this).closest('div').attr('id');
-    let title = $(this).closest('div').find('img').attr('alt');
+    let title = $(this).closest('div').find('p').html();
     let year = $(this).closest('div').find('img').attr('name').slice(0,4);
     getDataFromBestBuy(title,year,displayBestBuyData);
     getRecsFromTmdb(id,type,displayRecs);

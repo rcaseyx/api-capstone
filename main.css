@@ -36,6 +36,10 @@ main {
   font-size: 18px;
 }
 
+fieldset {
+  border: none;
+}
+
 .js-results {
   display: flex;
   flex-wrap: wrap;
