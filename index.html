@@ -14,14 +14,18 @@
     <div class="back-button" hidden></div>
     <main>
       <section class="search">
-        <p>Get <em>the scoop</em> on that movie or TV show you keep hearing about. Search for a title below!</p>
+        <p>Get <em>the scoop</em> on that movie or TV show you keep hearing about.</p>
         <form class="js-search">
-          <div class="radios">
-            <input type="radio" name="type" value="movie" required checked>Movie
-            <input type="radio" name="type" value="tv" required>TV
-          </div>
-          <input type="text" id="query" required>
-          <button type="submit" class="js-submit">Search</button>
+          <fieldset>
+            <legend>Search for a movie or TV show:</legend>
+              <div class="radios">
+                <label for="movie">
+                <input type="radio" name="type" value="movie" id="movie" required checked>Movie</label>
+                <label for="tv">
+                <input type="radio" name="type" value="tv" id="tv" required>TV</label>
+              </div>
+              <input type="search" id="query" placeholder="Search..." required>
+              <button type="submit" class="js-submit">Search</button>
         </form>
       </section>
       <section class="js-results">
