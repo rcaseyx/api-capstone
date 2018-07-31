@@ -4,12 +4,7 @@ let type = "";
 function handleSearch() {
   $('.js-search').submit(function(e) {
     e.preventDefault();
-    $('.purchase').html('');
-    $('.scoop').html('');
-    $('.trailer').html('');
-    $('.back-button').html('');
-    $('.recommend').html('');
-    $('.page').prop('hidden',true);
+    cleanSlate();
     let searchTerm = $('#query').val();
     type = $('input[type=radio]:checked').attr('value');
     $('#query').val('');
@@ -319,16 +314,20 @@ function handleViewRec() {
 
 function handleBack() {
   $('.back-button').on('click','.back',function() {
-    $('.back-button').html('');
-    $('.purchase').html('');
-    $('.scoop').html('');
-    $('.trailer').html('');
-    $('.recommend').html('');
-    $('.back-button').prop('hidden',true);
-    $('.page').prop('hidden',true);
+    cleanSlate();
     $('.js-results').prop('hidden',false);
     $('.js-results').css('display','flex');
   })
+}
+
+function cleanSlate() {
+  $('.purchase').html('');
+  $('.scoop').html('');
+  $('.trailer').html('');
+  $('.back-button').html('');
+  $('.recommend').html('');
+  $('.page').prop('hidden',true);
+  $('.back-button').prop('hidden',true);
 }
 
 function handleScoop() {
