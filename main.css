@@ -71,7 +71,7 @@ fieldset {
   text-align: center;
   padding: 15px;
   background-color: #373737;
-  color: #dcd0c0;
+  color: #f4f4f4;
   border-radius: 5px;
   border: 2px solid #c0b283;
 }
@@ -154,6 +154,20 @@ fieldset {
 
 .bestBuy img {
   width: 80%;
+}
+
+a {
+  color: #373737;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #dcd0c0;
+}
+
+a:hover {
+  color: #c0b283;
+  text-decoration: underline;
 }
 
 section h3 {
