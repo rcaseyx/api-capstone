@@ -4,6 +4,7 @@ let type = "";
 function handleSearch() {
   $('.js-search').submit(function(e) {
     e.preventDefault();
+    $('.js-results').css('opacity','0');
     cleanSlate();
     $('.search').find('p').html('');
     let searchTerm = $('#query').val();
@@ -12,6 +13,7 @@ function handleSearch() {
     $('.js-results').html('');
     $('.js-results').prop('hidden',false);
     $('.js-results').css('display','flex');
+    $('.js-results').animate({opacity: 1},'slow');
     getListFromTmdb(searchTerm,type,displayTmdbData);
   });
 }
@@ -53,6 +55,8 @@ function renderInitialResult(result) {
 
 function handleGetTheScoop() {
   $('.js-results').on('click','.get-scoop',function() {
+    $('.container').css('opacity','0');
+    $('.container').animate({opacity:1},'slow');
     $('.scoop').prop('hidden',false);
     $('.js-results').prop('hidden',true);
     $('.js-results').hide();
@@ -110,7 +114,7 @@ function renderTrailer(result) {
 function renderSelectionDetails(result) {
   console.log(result);
   let html = `<div class="currentSelection">
-                <h3>${movieOrTvTitle(result)}</h3>
+                <h2>${movieOrTvTitle(result)}</h2>
                 <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}">
                 <button class="viewTrailer">View Trailer</button>
                 <p><em>${result.overview}</em></p>
@@ -182,7 +186,7 @@ function cycleGenreNames(genres) {
 
 function handleYtClick() {
   $('.scoop').on('click','.viewTrailer',function() {
-    let title = $(this).closest('div').find('h3').html();
+    let title = $(this).closest('div').find('h2').html();
     console.log(title);
     let year = $(this).closest('div').find('img').attr('name').slice(0,4);
     let type = $('input[type=radio]:checked').attr('value');
@@ -269,7 +273,7 @@ function renderBestBuy(item) {
     showBestBuyError();
   }
   else {
-    let html = `<h3>Purchase Online</h3>
+    let html = `<h2>Purchase Online</h2>
                 <div class="bestBuy">
                   <img src=${item.image} alt="Buy on Blu Ray">
                   <p>${item.name}</p>
@@ -280,7 +284,7 @@ function renderBestBuy(item) {
 }
 
 function showBestBuyError() {
-  let html = `<h3>Purchase Online</h3>
+  let html = `<h2>Purchase Online</h2>
               <div>
                 <p>Item not found at Best Buy. Try searching on <a href="https://www.amazon.com/" target="_blank">Amazon.com.</a></p>
               </div>`;
@@ -306,7 +310,7 @@ function displayRecs(data) {
     for(i = 0;i < data.results.length;i++){
       result += renderRecs(data.results[i]);
     }
-    $('.recommend').html(`<h3>Recommendations Based On This Title</h3>`);
+    $('.recommend').html(`<h2>Recommendations Based On This Title</h2>`);
     $('.recommend').append('<div class="recScroll">' + result + '</div>');
   }
 }
@@ -320,13 +324,15 @@ function renderRecs(result) {
 }
 
 function recError() {
-  let html = `<h3>Recommendations Based On This Title</h3>
+  let html = `<h2>Recommendations Based On This Title</h2>
               <p>No recommendations found at this time.</p>`
   $('.recommend').html(html);
 }
 
 function handleViewRec() {
   $('.recommend').on('click','.viewRec',function() {
+    $('.scoop').css('opacity','0');
+    $('.scoop').animate({opacity:1},1000);
     $('.js-results').prop('hidden',true);
     $('.back-button').prop('hidden',false);
     $('.back-button').html('<button class="back">Back to Results</button>');
@@ -343,6 +349,8 @@ function handleViewRec() {
 function handleBack() {
   $('.back-button').on('click','.back',function() {
     cleanSlate();
+    $('.js-results').css('opacity','0');
+    $('.js-results').animate({opacity: 1},'slow');
     $('.js-results').prop('hidden',false);
     $('.js-results').css('display','flex');
   })
