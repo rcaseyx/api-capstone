@@ -60,6 +60,7 @@ fieldset {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  opacity: 0;
 }
 
 .searchResult {
@@ -238,4 +239,8 @@ iframe {
   border: 2px solid #c0b283;
   color: #f4f4f4;
   border-radius: 5px;
+}
+
+.page h2 {
+  font-size: 20px;
 }
