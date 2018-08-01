@@ -273,7 +273,7 @@ function renderBestBuy(item) {
                 <div class="bestBuy">
                   <img src=${item.image} alt="Buy on Blu Ray">
                   <p>${item.name}</p>
-                  <a href="${item.url}" target="_blank"><p>Purchase at BestBuy.com</p></a>
+                  <a href="${item.url}" target="_blank"><button>Purchase</button></a>
                 </div>`;
     $('.purchase').html(html);
   }
