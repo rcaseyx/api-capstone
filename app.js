@@ -5,6 +5,7 @@ function handleSearch() {
   $('.js-search').submit(function(e) {
     e.preventDefault();
     cleanSlate();
+    $('.search').find('p').html('');
     let searchTerm = $('#query').val();
     type = $('input[type=radio]:checked').attr('value');
     $('#query').val('');
@@ -46,16 +47,18 @@ function renderInitialResult(result) {
   return `<div id=${result.id} class="searchResult">
             <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}">
             <p>${movieOrTvTitle(result)}</p>
-            <button id="get-scoop">Get the Scoop!</button>
+            <button class="get-scoop">Get the Scoop!</button>
           </div>`
 }
 
 function handleGetTheScoop() {
-  $('.js-results').on('click','#get-scoop',function() {
+  $('.js-results').on('click','.get-scoop',function() {
+    $('.scoop').prop('hidden',false);
     $('.js-results').prop('hidden',true);
     $('.js-results').hide();
     $('.back-button').prop('hidden',false);
     $('.page').prop('hidden',false);
+    $('.container').prop('hidden',false);
     $('.back-button').html('<button class="back">Back to Results</button>');
     //let type = $('input[type=radio]:checked').attr('value');
     let id = $(this).closest('div').attr('id');
@@ -352,6 +355,8 @@ function cleanSlate() {
   $('.back-button').html('');
   $('.recommend').html('');
   $('.page').prop('hidden',true);
+  $('.scoop').prop('hidden',true);
+  $('.container').prop('hidden',true);
   $('.back-button').prop('hidden',true);
 }
 
