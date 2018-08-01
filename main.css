@@ -2,15 +2,27 @@
   box-sizing: border-box;
 }
 
+body {
+  background-color: #f4f4f4;
+  margin: 0;
+  font-family: 'EB Garamond', serif;
+}
+
 header {
   display: flex;
   justify-content: center;
+  color: #c0b283;
+  background-color: #373737;
+  font-family: 'Kaushan Script', cursive;
+  font-size: 20px;
 }
 
 main {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  color: #373737;
+  margin-bottom: 20px;
 }
 
 .search {
@@ -32,6 +44,10 @@ main {
   align-content: center;
 }
 
+#searchText {
+  display: block;
+}
+
 .search p {
   font-size: 18px;
 }
@@ -47,17 +63,20 @@ fieldset {
 }
 
 .searchResult {
-  display: flex;
-  flex: 1;
-  flex-basis: 25%;
+  flex-basis: 22%;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
   text-align: center;
+  padding: 15px;
+  background-color: #373737;
+  color: #dcd0c0;
+  border-radius: 5px;
+  border: 2px solid #c0b283;
 }
 
 .searchResult img {
-  width: 50%;
+  width: 80%;
 }
 
 .container {
@@ -74,6 +93,9 @@ fieldset {
 .scoop {
   flex: 2;
   order: 2;
+  background-color: #c0b283;
+  border: 2px solid #373737;
+  border-radius: 5px;
 }
 
 .scoop img {
@@ -92,8 +114,11 @@ fieldset {
 }
 
 .recs {
-  border: 1px solid black;
-  margin: auto;
+  border: 2px solid #c0b283;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
   padding: 10px;
   width: 70%;
 }
@@ -117,11 +142,16 @@ fieldset {
 }
 
 .bestBuy {
-  text-align: center;
+  border: 2px solid #c0b283;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  width: 70%;
 }
 
 .bestBuy img {
-  width: 50%;
+  width: 80%;
 }
 
 section h3 {
@@ -167,7 +197,8 @@ iframe {
 .back-button {
   position: absolute;
   top: 0;
-  margin-top: 10px;
+  margin-top: 3.5%;
+  margin-left: 20px;
 }
 
 .smallPoster {
@@ -196,4 +227,14 @@ iframe {
 .closeVideo {
   display: block;
   margin: auto;
+}
+
+.page {
+  margin-left: 10px;
+  background-color: #373737;
+  margin-right: 10px;
+  padding: 5px;
+  border: 2px solid #c0b283;
+  color: #f4f4f4;
+  border-radius: 5px;
 }

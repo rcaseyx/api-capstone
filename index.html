@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>The Scoop</title>
     <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="app.js"></script>
   </head>
@@ -14,24 +16,26 @@
     <div class="back-button" hidden></div>
     <main>
       <section class="search">
-        <p>Get <em>the scoop</em> on that movie or TV show you keep hearing about.</p>
+        <p>Get information on that movie or TV show you keep hearing about, including recommendations based on it and where you can purchase it online.</p>
         <form class="js-search">
           <fieldset>
-            <legend>Search for a movie or TV show:</legend>
+            <legend>Search for a movie or TV show below!</legend>
               <div class="radios">
                 <label for="movie">
                 <input type="radio" name="type" value="movie" id="movie" required checked>Movie</label>
                 <label for="tv">
                 <input type="radio" name="type" value="tv" id="tv" required>TV</label>
               </div>
+              <label for="query" id="searchText">Search by Title:</label>
               <input type="search" id="query" placeholder="Search..." required>
               <button type="submit" class="js-submit">Search</button>
+            </fieldset>
         </form>
       </section>
       <section class="js-results" aria-live="assertive">
       </section>
-      <section class="container page" hidden aria-live="assertive">
-        <section class="scoop">
+      <section class="container" hidden aria-live="assertive">
+        <section class="scoop" hidden>
         </section>
         <aside class="purchase page" hidden>
         </aside>
