@@ -63,7 +63,8 @@ function handleGetTheScoop() {
     $('.back-button').prop('hidden',false);
     $('.page').prop('hidden',false);
     $('.container').prop('hidden',false);
-    $('.back-button').html('<button class="back">Back to Results</button>');
+    $('.back-button').html('<button class="back button">Back to Results</button>');
+    $('.back-button').animate({opacity:1},'slow');
     //let type = $('input[type=radio]:checked').attr('value');
     let id = $(this).closest('.searchResult').attr('id');
     let title = $(this).closest('.searchResult').find('p').html();
@@ -107,7 +108,7 @@ function renderTrailer(result) {
             <iframe title="Selected Video" src="https://www.youtube.com/embed/${result.id.videoId}">
             </iframe>
             <span class="ytSearch">Not the right trailer? <a href="https://www.youtube.com/" target="_blank">Search YouTube.</a></span>
-            <button class="closeVideo">Close</button>
+            <button class="closeVideo button">Close</button>
           </div>`
 }
 
@@ -277,7 +278,7 @@ function renderBestBuy(item) {
                 <div class="bestBuy">
                   <img src=${item.image} alt="Buy on Blu Ray">
                   <p>${item.name}</p>
-                  <a href="${item.url}" target="_blank"><button>Purchase</button></a>
+                  <a href="${item.url}" target="_blank"><button class="button">Purchase</button></a>
                 </div>`;
     $('.purchase').html(html);
   }
@@ -319,7 +320,7 @@ function renderRecs(result) {
   return `<div id=${result.id} class="recs">
             <p>${movieOrTvTitle(result)}</p>
             <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}" class="smallPoster">
-            <button class="viewRec">View</button>
+            <button class="viewRec button">View</button>
           </div>`
 }
 
@@ -335,7 +336,7 @@ function handleViewRec() {
     $('.scoop').animate({opacity:1},1000);
     $('.js-results').prop('hidden',true);
     $('.back-button').prop('hidden',false);
-    $('.back-button').html('<button class="back">Back to Results</button>');
+    $('.back-button').html('<button class="back button">Back to Results</button>');
     let id = $(this).closest('div').attr('id');
     let title = $(this).closest('div').find('p').html();
     let year = $(this).closest('div').find('img').attr('name').slice(0,4);
@@ -351,6 +352,7 @@ function handleBack() {
     cleanSlate();
     $('.js-results').css('opacity','0');
     $('.js-results').animate({opacity: 1},'slow');
+    $('.back-button').animate({opacity:0},'slow');
     $('.js-results').prop('hidden',false);
     $('.js-results').css('display','flex');
   })

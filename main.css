@@ -46,6 +46,8 @@ main {
 
 #searchText {
   display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .search p {
@@ -243,6 +245,8 @@ iframe {
   top: 0;
   margin-top: 3.5%;
   margin-left: 20px;
+  width: 20%;
+  opacity: 0;
 }
 
 .smallPoster {
@@ -285,4 +289,54 @@ iframe {
 
 .page h2 {
   font-size: 20px;
+}
+
+.button {
+  width: 50%;
+  background-color: #c0b283;
+  border: 2px solid #f4f4f4;
+  padding: 5px;
+  font-size: 15px;
+  transition: .5s ease;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: #dcd0c0;
+  border: 2px solid #c0b283;
+  cursor: pointer;
+}
+
+.viewTrailer {
+  width: 40%;
+  background-color: #373737;
+  border: 2px solid #f4f4f4;
+  padding: 5px;
+  font-size: 15px;
+  transition: .5s ease;
+  color: #f4f4f4;
+  border-radius: 5px;
+}
+
+.viewTrailer:hover {
+  background-color: #dcd0c0;
+  border: 2px solid #373737;
+  cursor: pointer;
+  color: #373737;
+}
+
+.js-submit {
+  width: 50%;
+  background-color: #c0b283;
+  border: 2px solid #373737;
+  padding: 5px;
+  font-size: 15px;
+  transition: .5s ease;
+  border-radius: 5px;
+}
+
+.js-submit:hover {
+  background-color: #373737;
+  border: 2px solid #c0b283;
+  color: #f4f4f4;
 }
