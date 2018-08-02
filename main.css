@@ -104,10 +104,40 @@ fieldset {
 }
 
 .get-scoop-text {
-  margin-top: 55%;
+  margin-top: 50%;
   font-size: 25px;
   color: #373737;
   padding: 10px;
+}
+
+.posterContainer {
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.posterOverlay {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  text-align: center;
+  background-color: rgba(192, 178, 131, .9);
+  transition: .5s ease;
+  align-items: center;
+  opacity: 0;
+  font-size: 20px;
+  padding-top: 30%;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.posterContainer:hover .posterOverlay {
+  opacity: 1;
 }
 
 .container {
@@ -339,4 +369,8 @@ iframe {
   background-color: #373737;
   border: 2px solid #c0b283;
   color: #f4f4f4;
+}
+
+button {
+  font-family: 'EB Garamond', serif;
 }
