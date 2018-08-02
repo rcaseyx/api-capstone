@@ -116,14 +116,19 @@ function renderSelectionDetails(result) {
   console.log(result);
   let html = `<div class="currentSelection">
                 <h2>${movieOrTvTitle(result)}</h2>
-                <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}">
+                <div class="posterContainer">
+                  <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}">
+                  <div class="posterOverlay">
+                    <p><em>${result.overview}</em></p>
+                    <p>Genre: <span class="genres">${cycleGenreNames(result.genres)}</span></p>
+                    <p>${formatDate(result)}</p>
+                    ${tvEpsSeasons(result)}
+                    <p><span class="runtime">${movieOrTvRuntime(result)} minutes</span></p>
+                    <p>IMDb Rating: <span class="rating">${result.vote_average} / 10</span></p>
+                  </div>
+                </div>
                 <button class="viewTrailer">View Trailer</button>
-                <p><em>${result.overview}</em></p>
-                <p>Genre: <span class="genres">${cycleGenreNames(result.genres)}</span></p>
-                <p>${formatDate(result)}</p>
-                ${tvEpsSeasons(result)}
-                <p><span class="runtime">${movieOrTvRuntime(result)} minutes</span></p>
-                <p>IMDb Rating: <span class="rating">${result.vote_average} / 10</span></p>
+
               </div>`;
 
   $('.scoop').html(html);
@@ -343,7 +348,6 @@ function handleViewRec() {
     getDataFromBestBuy(title,year,displayBestBuyData);
     getRecsFromTmdb(id,type,displayRecs);
     getSingleData(id,type,renderSelectionDetails);
-    $('html, body').animate({scrollTop : 0},800);
   });
 }
 
