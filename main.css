@@ -65,6 +65,7 @@ fieldset {
 
 .searchResult {
   flex-basis: 22%;
+  position: relative;
   flex-direction: column;
   align-items: center;
   margin-bottom: 40px;
@@ -74,10 +75,37 @@ fieldset {
   color: #f4f4f4;
   border-radius: 5px;
   border: 2px solid #c0b283;
+  transition: .5s ease;
 }
 
 .searchResult img {
   width: 80%;
+}
+
+.get-scoop {
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  text-align: center;
+  background-color: rgba(192, 178, 131, .9);
+  transition: .5s ease;
+  align-items: center;
+  opacity: 0;
+}
+
+.searchResult:hover .get-scoop {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.searchResult:hover {
+  box-shadow: 0 0 5px 5px #888;
+}
+
+.get-scoop-text {
+  margin-top: 55%;
+  font-size: 25px;
+  color: #373737;
+  padding: 10px;
 }
 
 .container {

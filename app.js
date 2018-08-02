@@ -49,7 +49,7 @@ function renderInitialResult(result) {
   return `<div id=${result.id} class="searchResult">
             <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}">
             <p>${movieOrTvTitle(result)}</p>
-            <button class="get-scoop">Get the Scoop!</button>
+            <div class="get-scoop"><div class="get-scoop-text">Get the Scoop on ${movieOrTvTitle(result)}</div></div>
           </div>`
 }
 
@@ -65,9 +65,9 @@ function handleGetTheScoop() {
     $('.container').prop('hidden',false);
     $('.back-button').html('<button class="back">Back to Results</button>');
     //let type = $('input[type=radio]:checked').attr('value');
-    let id = $(this).closest('div').attr('id');
-    let title = $(this).closest('div').find('p').html();
-    let year = $(this).closest('div').find('img').attr('name').slice(0,4);
+    let id = $(this).closest('.searchResult').attr('id');
+    let title = $(this).closest('.searchResult').find('p').html();
+    let year = $(this).closest('.searchResult').find('img').attr('name').slice(0,4);
     getDataFromBestBuy(title,year,displayBestBuyData);
     getRecsFromTmdb(id,type,displayRecs);
     getSingleData(id,type,renderSelectionDetails);
