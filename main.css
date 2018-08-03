@@ -346,6 +346,7 @@ iframe {
   transition: .5s ease;
   color: #f4f4f4;
   border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .viewTrailer:hover {
@@ -378,4 +379,133 @@ iframe {
 
 button {
   font-family: 'EB Garamond', serif;
+}
+
+@media only screen and (max-width: 640px) {
+
+  .search {
+    width: 100%;
+  }
+
+  #query {
+    font-size: 15px;
+  }
+
+  .searchResult {
+    flex-basis: 97%;
+  }
+
+  .get-scoop-text {
+    font-size: 18px;
+  }
+
+  .posterOverlay {
+    font-size: 15px;
+    padding-top: 20%;
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .purchase {
+    width: 97%%;
+    order: 3;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+  .scoop {
+    width: 97%%;
+    order: 1;
+    margin-bottom: 20px;
+  }
+
+  .recommend {
+    width: 97%%;
+    order: 2;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .recScroll {
+    height: 400px;
+    margin-bottom: 20px;
+  }
+
+  .bestBuy {
+    margin-bottom: 20px;
+  }
+
+  .back {
+    width: 70%;
+    font-size: 10px;
+    margin-top: 40%;
+  }
+}
+
+@media only screen and (min-width: 640px) and (max-width: 1024px) {
+
+  .search {
+    width: 100%;
+  }
+
+  #query {
+    font-size: 20px;
+  }
+
+  .searchResult {
+    flex-basis: 47%;
+  }
+
+  .get-scoop-text {
+    font-size: 20px;
+  }
+
+  .posterOverlay {
+    font-size: 20px;
+    padding-top: 20%;
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .purchase {
+    width: 97%%;
+    order: 3;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+  .scoop {
+    width: 97%%;
+    order: 1;
+    margin-bottom: 20px;
+  }
+
+  .recommend {
+    width: 97%%;
+    order: 2;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .recScroll {
+    height: 600px;
+    margin-bottom: 20px;
+  }
+
+  .bestBuy {
+    margin-bottom: 20px;
+  }
+
+  .back {
+    width: 70%;
+    margin-top: 10%;
+  }
 }
