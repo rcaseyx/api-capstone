@@ -14,7 +14,7 @@
     <header role="banner">
       <h1>The Scoop</h1>
     </header>
-    <div class="back-button" hidden></div>
+    <section class="back-button" hidden></section>
     <main>
       <section class="search">
         <p>Get information on that movie or TV show you keep hearing about, including recommendations based on it and where you can purchase it online.</p>
@@ -32,8 +32,9 @@
               <button type="submit" class="js-submit">Search</button>
             </fieldset>
         </form>
+        <div class="searchFeedback" aria-live="assertive" hidden></div>
       </section>
-      <section class="js-results" aria-live="assertive">
+      <section class="js-results" aria-live="polite">
       </section>
       <section class="container" hidden aria-live="assertive">
         <section class="scoop" hidden>

@@ -11,6 +11,10 @@ function handleSearch() {
     type = $('input[type=radio]:checked').attr('value');
     $('#query').val('');
     $('.js-results').html('');
+    $('.searchFeedback').html('');
+    $('.searchFeedback').html(`Showing results for "${searchTerm}"`);
+    $('.searchFeedback').prop('hidden',false);
+    $('.searchFeedback').animate({opacity: 1},'slow');
     $('.js-results').prop('hidden',false);
     $('.js-results').css('display','flex');
     $('.js-results').animate({opacity: 1},'slow');
@@ -49,7 +53,7 @@ function renderInitialResult(result) {
   return `<div id=${result.id} class="searchResult">
             <img src="${placeholderPoster(result)}" alt="${movieOrTvTitle(result)} poster" name="${result.release_date}">
             <p>${movieOrTvTitle(result)}</p>
-            <div class="get-scoop"><div class="get-scoop-text">Get the Scoop on ${movieOrTvTitle(result)}</div></div>
+            <div class="get-scoop" role="button"><div class="get-scoop-text">Get the Scoop on ${movieOrTvTitle(result)}</div></div>
           </div>`
 }
 
@@ -65,7 +69,8 @@ function handleGetTheScoop() {
     $('.container').prop('hidden',false);
     $('.back-button').html('<button class="back button">Back to Results</button>');
     $('.back-button').animate({opacity:1},'slow');
-    //let type = $('input[type=radio]:checked').attr('value');
+    $('.searchFeedback').prop('hidden',true);
+    $('.searchFeedback').animate({opacity: 0},'slow');
     let id = $(this).closest('.searchResult').attr('id');
     let title = $(this).closest('.searchResult').find('p').html();
     let year = $(this).closest('.searchResult').find('img').attr('name').slice(0,4);
@@ -359,6 +364,8 @@ function handleBack() {
     $('.back-button').animate({opacity:0},'slow');
     $('.js-results').prop('hidden',false);
     $('.js-results').css('display','flex');
+    $('.searchFeedback').prop('hidden',false);
+    $('.searchFeedback').animate({opacity: 1},'slow');
   })
 }
 

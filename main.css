@@ -388,6 +388,10 @@ button {
   flex-direction: column;
 }
 
+.searchFeedback {
+  opacity: 0;
+}
+
 @media only screen and (max-width: 640px) {
 
   .search {
