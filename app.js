@@ -32,6 +32,7 @@ function getListFromTmdb(term,type,callback) {
   $.getJSON(tmdb,query,callback);
 }
 
+//tmdb API doesn't return an error for no results, so this checks the result array length instead
 function displayTmdbData(data) {
   if(data.results.length === 0) {
     const result = `<p>No results. Please try another search.</p>`
@@ -82,7 +83,6 @@ function handleGetTheScoop() {
 }
 
 function getDataFromYt(term,type,year,callback) {
-  // retrieves JSON data from YouTube
   const query = {
     part: "snippet",
     type: "video",
@@ -118,7 +118,6 @@ function renderTrailer(result) {
 }
 
 function renderSelectionDetails(result) {
-  console.log(result);
   let html = `<div class="currentSelection">
                 <h2>${movieOrTvTitle(result)}</h2>
                 <div class="posterContainer">
@@ -158,6 +157,7 @@ function tvEpsSeasons(result) {
   }
 }
 
+//json property names are different for movies and tv, so these functions determine which names to use
 function movieOrTvTitle(result) {
   if(type == "tv") {
     return `${result.name}`;
@@ -198,7 +198,6 @@ function cycleGenreNames(genres) {
 function handleYtClick() {
   $('.scoop').on('click','.viewTrailer',function() {
     let title = $(this).closest('div').find('h2').html();
-    console.log(title);
     let year = $(this).closest('div').find('img').attr('name').slice(0,4);
     let type = $('input[type=radio]:checked').attr('value');
     getDataFromYt(title,type,year,displayYtData);
@@ -230,12 +229,17 @@ function closeVideo() {
   $('.trailer').html('');
 }
 
+//the BestBuy API is very particular about how search terms are passed to it
 function getDataFromBestBuy(title,year,callback) {
+  //this removes most special characters from the title
   let titleFirstReplace = title.replace(/[#,+()$~%.'":*?<>{}]/g, '');
   let titleReplace = titleFirstReplace.replace(/&/g, 'and');
   let titleLastReplace = titleReplace.replace(/-/g, ' ');
+  //splits the title into an array to iterate over
   let titleArr = titleLastReplace.split(' ');
   let search = "";
+
+  //movies include year, tv shows do not since multiple seasons = multiple years
   if(type == "movie") {
     for(i = 0; i < titleArr.length; i++) {
       let word = titleArr[i];
