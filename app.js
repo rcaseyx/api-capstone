@@ -72,9 +72,9 @@ function handleGetTheScoop() {
     $('.back-button').animate({opacity:1},'slow');
     $('.searchFeedback').prop('hidden',true);
     $('.searchFeedback').animate({opacity: 0},'slow');
-    let id = $(this).closest('.searchResult').attr('id');
-    let title = $(this).closest('.searchResult').find('p').html();
-    let year = $(this).closest('.searchResult').find('img').attr('name').slice(0,4);
+    const id = $(this).closest('.searchResult').attr('id');
+    const title = $(this).closest('.searchResult').find('p').html();
+    const year = $(this).closest('.searchResult').find('img').attr('name').slice(0,4);
     getDataFromBestBuy(title,year,displayBestBuyData);
     getRecsFromTmdb(id,type,displayRecs);
     getSingleData(id,type,renderSelectionDetails);
